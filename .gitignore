@@ -15,5 +15,6 @@
 /vendor/
 /web/bundles/
 /web/frontend/node_modules
-/web/uploads/*
-.idea/*
+/web/uploads/
+/.idea/workspace.xml
+/.idea/tasks.xml
