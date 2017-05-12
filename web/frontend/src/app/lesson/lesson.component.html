@@ -1,0 +1,29 @@
+<div *ngIf="lesson">
+    <md-card>
+        <h1>{{ lesson.title }}</h1>
+        <div [innerHtml]="lesson.content | safeHtml"></div>
+    </md-card>
+
+    <br>
+
+    <md-card>
+        <h1>Comments</h1>
+
+        <div class="comment" *ngFor="let comment of lesson.comments">
+            {{ comment.user.username }} - {{ comment.text }} - {{ comment.createdAt | date: 'dd/MM/yyyy HH:mm:ss' }}
+        </div>
+
+        <br>
+
+        <form (ngSubmit)="onSubmit(form.value)" [formGroup]="form">
+            <md-input-container [class.has-error]="!form.controls.text.valid && form.controls.text.touched">
+                <textarea formControlName="text" mdInput placeholder="Comment"></textarea>
+                <md-hint>
+                    <span *ngIf="form.controls.text.hasError('required') && form.controls.text.touched">Text is required.</span>
+                </md-hint>
+            </md-input-container>
+
+            <button type="submit" [disabled]="!form.valid" md-button color="primary">Submit</button>
+        </form>
+    </md-card>
+</div>

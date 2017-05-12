@@ -1,0 +1,29 @@
+<div class="course" *ngIf="course">
+    <md-card>
+        <md-card-header>
+            <img md-card-avatar src="/uploads/{{ course.image }}">
+            <md-card-title>
+                {{ course.name }}
+                <span *ngIf="course.price == 0">(Free)</span>
+                <span *ngIf="course.price != 0">({{ course.price }}€)</span>
+            </md-card-title>
+            <md-card-subtitle>{{ course.description }}</md-card-subtitle>
+        </md-card-header>
+        <md-card-content>
+            <p>Teacher: {{ course.admin.username }}</p>
+            <p>Course content: </p>
+            <ul>
+                <li *ngFor="let lesson of course.lessons">
+                    {{ lesson.title }}
+                    <a *ngIf="userService.isLoggedIn() && userInfo && !checkEnroll()" md-button color="primary" routerLink="./lesson/{{ lesson.id }}">View</a>
+                </li>
+            </ul>
+        </md-card-content>
+        <md-card-actions align="start">
+            <a md-button color="primary" routerLink="/login" mdTooltip="Login first!" *ngIf="!userService.isLoggedIn()">
+                Enroll
+            </a>
+            <a md-button color="primary" *ngIf="userService.isLoggedIn() && userInfo && checkEnroll()" (click)="onEnroll()">Enroll</a>
+        </md-card-actions>
+    </md-card>
+</div>

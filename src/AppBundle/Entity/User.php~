@@ -1,0 +1,281 @@
+<?php
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * @ORM\Table(name="users")
+ * @ORM\Entity
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
+ */
+class User implements UserInterface
+{
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=true)
+     * @Assert\NotBlank()
+     * @Groups({"public","export2"})
+     */
+    private $username;
+
+    /**
+     * @ORM\Column(type="string", length=500)
+     * @Assert\NotBlank()
+     */
+    private $password;
+
+    /**
+     * @var array
+     *
+     * @ORM\OneToMany(targetEntity="Course", mappedBy="admin")
+     * @Groups({"courses"})
+     */
+    private $adminCourses;
+
+    /**
+     * @var array
+     *
+     * @ORM\ManyToMany(targetEntity="Course", inversedBy="users")
+     * @ORM\JoinTable(name="users_courses")
+     * @Groups({"courses"})
+     */
+    private $enrolledCourses;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="user", cascade={"persist","remove"})
+     * @Groups({"export"})
+     */
+    private $comments;
+
+
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $roles = [];
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $adminCourses = new ArrayCollection();
+        $enrolledCourses = new ArrayCollection();
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+        return array_unique($roles);
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Add adminCourse
+     *
+     * @param \AppBundle\Entity\Course $adminCourse
+     *
+     * @return User
+     */
+    public function addAdminCourse(\AppBundle\Entity\Course $adminCourse)
+    {
+        $this->adminCourses[] = $adminCourse;
+
+        return $this;
+    }
+
+    /**
+     * Remove adminCourse
+     *
+     * @param \AppBundle\Entity\Course $adminCourse
+     */
+    public function removeAdminCourse(\AppBundle\Entity\Course $adminCourse)
+    {
+        $this->adminCourses->removeElement($adminCourse);
+    }
+
+    /**
+     * Get adminCourses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAdminCourses()
+    {
+        return $this->adminCourses;
+    }
+
+    /**
+     * Add enrolledCourse
+     *
+     * @param \AppBundle\Entity\Course $enrolledCourse
+     *
+     * @return User
+     */
+    public function addEnrolledCourse(\AppBundle\Entity\Course $enrolledCourse)
+    {
+        $this->enrolledCourses[] = $enrolledCourse;
+
+        return $this;
+    }
+
+    /**
+     * Remove enrolledCourse
+     *
+     * @param \AppBundle\Entity\Course $enrolledCourse
+     */
+    public function removeEnrolledCourse(\AppBundle\Entity\Course $enrolledCourse)
+    {
+        $this->enrolledCourses->removeElement($enrolledCourse);
+    }
+
+    /**
+     * Get enrolledCourses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEnrolledCourses()
+    {
+        return $this->enrolledCourses;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     *
+     * @return User
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+}

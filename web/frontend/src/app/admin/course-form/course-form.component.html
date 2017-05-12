@@ -1,0 +1,50 @@
+<md-card>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" enctype="multipart/form-data">
+        <h2>Course</h2>
+        <md-input-container [class.has-error]="!form.controls.name.valid && form.controls.name.touched">
+            <input type="text" formControlName="name" mdInput placeholder="Name">
+            <md-hint>
+                <span *ngIf="form.controls.name.hasError('required') && form.controls.name.touched">Name is required.</span>
+            </md-hint>
+        </md-input-container>
+
+        <md-input-container [class.has-error]="!form.controls.description.valid && form.controls.description.touched">
+            <textarea formControlName="description" mdInput placeholder="Description"></textarea>
+            <md-hint>
+                <span *ngIf="form.controls.description.hasError('required') && form.controls.description.touched">Description is required.</span>
+            </md-hint>
+        </md-input-container>
+
+        <md-input-container [class.has-error]="!form.controls.price.valid && form.controls.price.touched">
+            <input type="number" formControlName="price" mdInput placeholder="Price">
+            <md-hint>
+                <span *ngIf="form.controls.price.hasError('required') && form.controls.price.touched">Price is required. (0 = FREE)</span>
+            </md-hint>
+        </md-input-container>
+
+        <h2>Image</h2>
+        <div>
+            <img *ngIf="course" src="/uploads/{{ course.image }}" width="100">
+            <input type="file" (change)="onChange($event)" placeholder="Image">
+        </div>
+
+        <h2>Lessons <button md-mini-fab color="primary" (click)="onAddRow()"><md-icon>add</md-icon></button></h2>
+        <div formArrayName="lessons">
+            <div class="lesson" *ngFor="let index of items">
+                <div formGroupName="{{ index }}">
+                    <md-input-container>
+                        <input type="text" formControlName="title" mdInput placeholder="Title">
+                    </md-input-container>
+                    <button class="remove-button" md-mini-fab (click)="onRemoveRow(index)"><md-icon>remove</md-icon></button>
+                    <ckeditor
+                        formControlName="content"
+                        [config]="config"
+                        debounce="500">
+                    </ckeditor>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="!form.valid" md-button color="primary">Submit</button>
+    </form>
+</md-card>

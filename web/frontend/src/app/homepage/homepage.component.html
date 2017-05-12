@@ -1,0 +1,22 @@
+<h1>Simple LMS</h1>
+<p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda autem distinctio dolores ducimus enim explicabo facere iste modi nesciunt odio, omnis porro sequi similique tenetur ullam unde voluptatibus. Excepturi!
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda autem distinctio dolores ducimus enim explicabo facere iste modi nesciunt odio, omnis porro sequi similique tenetur ullam unde voluptatibus. Excepturi!
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda autem distinctio dolores ducimus enim explicabo facere iste modi nesciunt odio, omnis porro sequi similique tenetur ullam unde voluptatibus. Excepturi!
+</p>
+
+<h1>Latest courses</h1>
+<md-card *ngFor="let course of courses">
+    <md-card-header>
+        <md-card-title>
+            {{ course.name }}
+            <span *ngIf="course.price == 0">(Free)</span>
+            <span *ngIf="course.price != 0">({{ course.price }}€)</span>
+        </md-card-title>
+        <md-card-subtitle>{{ course.description }}</md-card-subtitle>
+    </md-card-header>
+    <img md-card-image src="/uploads/{{ course.image }}">
+    <md-card-actions align="start">
+        <a md-button color="primary" routerLink="/course/{{ course.slug }}">View</a>
+    </md-card-actions>
+</md-card>

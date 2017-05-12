@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  height: 100%;
+  background-color: #f9f8f6;
+  color: rgba(0,0,0, .84);
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+h1, h2, h3 {
+  font-weight: 100;
+}
+.has-error {
+  color: rgb(221, 44, 0);
+  label {
+    color: rgb(221, 44, 0)!important;
+  }
+  .md-input-underline {
+    border-color: rgb(221, 44, 0)!important;
+    .md-input-ripple {
+       background-color: rgb(221, 44, 0);
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  > md-input-container {
+    margin-bottom: 14px;
+  }
+}

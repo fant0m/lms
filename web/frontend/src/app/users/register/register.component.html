@@ -1,0 +1,28 @@
+<md-card>
+    <form (ngSubmit)="onSubmit(form.value)" [formGroup]="form">
+        <md-input-container [class.has-error]="!form.controls.email.valid && form.controls.email.touched">
+            <input type="email" formControlName="email" mdInput placeholder="Email address">
+            <md-hint>
+                <span *ngIf="form.controls.email.hasError('required') && form.controls.email.touched">Email address is required.</span>
+                <span *ngIf="form.controls.email.hasError('pattern') && form.controls.email.touched">This is not a valid email address.</span>
+            </md-hint>
+        </md-input-container>
+
+        <md-input-container [class.has-error]="!form.controls.username.valid && form.controls.username.touched">
+            <input type="text" formControlName="username" mdInput placeholder="Username">
+            <md-hint>
+                <span *ngIf="form.controls.username.hasError('required') && form.controls.username.touched">Username is required.</span>
+            </md-hint>
+        </md-input-container>
+
+        <md-input-container [class.has-error]="!form.controls.password.valid && form.controls.password.touched">
+            <input type="password" formControlName="password" mdInput placeholder="Password">
+            <md-hint>
+                <span *ngIf="form.controls.password.hasError('required') && form.controls.password.touched">Password is required.</span>
+                <span *ngIf="form.controls.password.hasError('minlength') && form.controls.password.touched">Password must have at least 6 characters.</span>
+            </md-hint>
+        </md-input-container>
+
+        <button type="submit" [disabled]="!form.valid" md-button color="primary">Register</button>
+    </form>
+</md-card>

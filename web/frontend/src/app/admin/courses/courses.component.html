@@ -1,0 +1,17 @@
+<a md-fab id="add" routerLink="create-course">
+  <md-icon>add</md-icon>
+</a>
+
+<br>
+
+<md-card *ngFor="let course of courses">
+    <md-card-header>
+        <md-card-title>{{ course.name }}</md-card-title>
+        <md-card-subtitle>{{ course.description }}</md-card-subtitle>
+    </md-card-header>
+    <img md-card-image src="/uploads/{{ course.image }}">
+    <md-card-actions align="start">
+        <a md-button color="primary" routerLink="edit-course/{{ course.slug }}">Manage</a>
+        <button md-button color="warn" (click)="onAction2">Delete</button>
+    </md-card-actions>
+</md-card>
