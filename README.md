@@ -1,4 +1,6 @@
-.checkout
+Simple Learning Management System
 =========
 
-A Symfony project created on May 11, 2017, 9:58 pm.
+Front-end: Angular (4)
+Back-end: Symfony
+Design: Angular Material
